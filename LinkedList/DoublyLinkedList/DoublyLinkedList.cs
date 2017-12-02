@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace SinglyLinkedList
+namespace DoublyLinkedList
 {
-    public class SinglyLinkedList<T> : ICollection<T>
+    public class DoublyLinkedList<T> : ICollection<T>
     {
-        #region Singly Linked List properties
+        #region Doubly Linked List properties
         /// <summary>
         /// Head node points to the beginning of the linked list
         /// </summary>
@@ -44,7 +42,7 @@ namespace SinglyLinkedList
 
             // The new node added is made to point to the rest of the linked list
             Head.Next = temp;
-            
+
             Count++;
 
             // If the linked list was empty, the head and tail should be the same,
@@ -52,6 +50,10 @@ namespace SinglyLinkedList
             if (Count == 1)
             {
                 Tail = Head;
+            }
+            else
+            {
+                temp.Previous = Head;
             }
         }
 
@@ -86,6 +88,7 @@ namespace SinglyLinkedList
             else
             {
                 Tail.Next = node;
+                node.Previous = Tail;
             }
 
             Tail = node;
@@ -94,7 +97,7 @@ namespace SinglyLinkedList
         }
         #endregion
 
-        #region Remove from Singly Linked List
+        #region Remove from Doubly Linked List
         /// <summary>
         /// Removing the first element from the linked list
         /// </summary>
@@ -114,6 +117,10 @@ namespace SinglyLinkedList
                 {
                     Tail = null;
                 }
+                else
+                {
+                    Head.Previous = null;
+                }
             }
         }
 
@@ -132,19 +139,8 @@ namespace SinglyLinkedList
                 }
                 else
                 {
-                    Node<T> current = Head;
-                    
-                    // Iterate to the second last element in the linked list
-                    while (current.Next != null)
-                    {
-                        current = current.Next;
-                    }
-
-                    // Remove the link to the last element
-                    current.Next = null;
-
-                    // Reassign second last element as the last element
-                    Tail = current;
+                    Tail = Tail.Previous;
+                    Tail.Next = null;
                 }
                 Count--;
             }
@@ -274,11 +270,15 @@ namespace SinglyLinkedList
                         {
                             Tail = previous;
                         }
+
+                        else
+                        {
+                            current.Next.Previous = previous;
+                        }
                         Count--;
                     }
                     else
                     {
-                        // Single node or the first node to remove
                         RemoveFirst();
                     }
 
