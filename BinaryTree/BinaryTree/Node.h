@@ -9,7 +9,7 @@
 #ifndef Node_h
 #define Node_h
 
-template <class T>
+template <typename T>
 struct Node {
     T value;
     Node<T> *left;
